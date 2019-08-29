@@ -405,7 +405,7 @@ $(document).ready(function(){
     clearBoard();
     drawBoard();
     fillSquaresNumbers();
-    shuffle();
+    quickShuffle();
     setBoard();
     $('#movements').text('0');
     $('#timer').text('00:00');
