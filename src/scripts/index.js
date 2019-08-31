@@ -93,7 +93,7 @@ $(document).ready(function(){
           row.push(piece);
           // squares[y][x] = piece;
         }else {
-          row.push(null)
+          row.push(null);
         }
       }
       squares.push(row);
@@ -354,7 +354,7 @@ $(document).ready(function(){
 
   $(window).resize(()=>{
     resize();
-  })
+  });
 
   function resize(){
     // console.log('resize');
@@ -458,7 +458,7 @@ $(document).ready(function(){
     localStorage['puzzleSize'] = PUZZLE_WIDTH;
     // localStorage['puzzlesize'] = puzzlePieces;
     newGame();
-  })
+  });
 
   $(function(e){
     $(document).keydown(keydown);
