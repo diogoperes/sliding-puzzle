@@ -8,12 +8,13 @@
 </head>
 <body>
   <div class="main-container">
-    <div class="history-container">
+    <div class="history-container" id="history">
+      <img src="public/close.svg" id="closeHistory">
       <h2 class="history-title">HISTORY</h2>
       <div id="historyItems"></div>
       <button id="clearHistory">Clear</button>
     </div>
-    <div class="game-container">
+    <div class="game-container" id="gameContainer">
       <div class="game-data">
         <div class="movements">
           <h2 class="name">Moves: </h2>
@@ -30,6 +31,7 @@
         </div>
       </div>
       <div class="game-buttons">
+        <button class="history-btn" id="historyBtn">HISTORY</button>
         <button class="new-game-btn" id="new-game">NEW GAME</button>
         <div class="puzzle-size-container">
           <label for="option_size">SIZE</label>
