@@ -1,7 +1,8 @@
 $body-color: linear-gradient(to right, #ad5389, #3c1053);
 
-html {
+html, body {
   height: 100%;
+  margin: 0;
 }
 
 body {
@@ -10,12 +11,93 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.title {
-  text-align: center;
+.main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
 }
 
 .game-container {
+  flex: 2;
+  z-index: 1;
+  padding: 0 8px;
+}
 
+.right-padding {
+  flex: 1;
+  max-width: 250px;
+  height: 100%;
+}
+
+.history-container {
+  left: 0;
+  margin-right: 50px;
+  width: 250px;
+  height: 100%;
+  background: #0000004f;
+  flex-shrink: 0;
+  z-index: 2;
+  transform: translateX(0);
+  transition: transform 0.5s ease-in-out;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  #historyItems {
+    flex: 1 100%;
+  }
+
+  .history-item {
+    padding: 5px;
+    margin: 5px 0;
+    font-size: 1.2em;
+    color: #ffffff;
+    background: #0000004f;
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin: 2px 0;
+
+      .left {
+        display: inline-block;
+      }
+      .right {
+        display: inline-block;
+      }
+    }
+  }
+
+  #clearHistory {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 1.5em;
+    margin: 5px 0;
+  }
+
+}
+
+.history-title {
+  text-align: center;
+  color: #ffffff;
+}
+
+@media only screen and (max-width: 950px) {
+  .history-container {
+    position: absolute;
+    transform: translateX(-100%);
+  }
+  .right-padding {
+    display: none;
+  }
+}
+
+.title {
+  text-align: center;
 }
 
 .game-data {
@@ -134,12 +216,12 @@ body {
 @media only screen and (max-width: 500px) {
   .game-data {
     h1 {
-      font-size: 16px;
+      font-size: 26px;
     }
   }
 
   .square-number {
-    font-size: 20px;
+    font-size: 30px;
   }
 
   .game-buttons {

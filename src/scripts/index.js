@@ -25,12 +25,21 @@ $(document).ready(function(){
   let timer;
   let hasWin = false;
 
-  let image1= "https://tinyurl.com/ydex5sr4";
-  let image2= "https://tinyurl.com/https-puzzlepics2";
+  let history = [
+    {
+      puzzleType: '5x5',
+      timestamp: Date.now(),
+      moves: '27',
+      time: '27:28'
+    }
+  ];
+
+  let image1 = "https://tinyurl.com/ydex5sr4";
+  let image2 = "https://tinyurl.com/https-puzzlepics2";
   let image3 = "https://tinyurl.com/https-puzzlepics3";
-  let image4= "https://tinyurl.com/https-puzzlepics4";
-  let image5= "https://tinyurl.com/https-puzzlepics5";
-  let image6= "https://tinyurl.com/https-puzzlepics6";
+  let image4 = "https://tinyurl.com/https-puzzlepics4";
+  let image5 = "https://tinyurl.com/https-puzzlepics5";
+  let image6 = "https://tinyurl.com/https-puzzlepics6";
   let image7= "https://tinyurl.com/https-puzzlepics7";
   let image8= "https://tinyurl.com/https-puzzlepics8";
   let image9= "https://tinyurl.com/https-puzzlepics9";
@@ -339,7 +348,7 @@ $(document).ready(function(){
     let size = 600;
     let screenWidth = $(window).width();
 
-    if(screenWidth < 600) {
+    if(screenWidth < 620) {
       size = screenWidth - 20;
     }
 
@@ -467,6 +476,7 @@ $(document).ready(function(){
     quickShuffle();
     // shuffle();
     setBoard();
+    drawHistory();
     // startTimer();
     if(timer !== undefined) {
       clearInterval(timer);
@@ -484,6 +494,40 @@ $(document).ready(function(){
     //   $("#option_numbers").attr("checked", true);
     //   showNumbers = true;
     // }
+  }
+
+  function drawHistory() {
+    let historyEl = document.getElementById('historyItems');
+    console.log('history', history);
+    history.forEach(function(element) {
+      let div = document.createElement('div');
+      div.setAttribute('class', 'history-item');
+      div.innerHTML = `
+          <div class="container">
+            <div class="left">${element.puzzleType}</div>
+            <div class="right">${timeConverter(element.timestamp)}</div>
+          </div>
+          <div class="container">
+            <div class="left">${element.moves}</div>
+            <div class="right">${element.time}</div>
+          </div>
+      `;
+      historyEl.appendChild(div);
+    });
+
+  }
+
+  function timeConverter(timestamp){
+    let a = new Date(timestamp);
+    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let year = a.getFullYear();
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    let hour = a.getHours();
+    let min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+    let sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+    let time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
   }
 
 });
