@@ -581,6 +581,7 @@ $(document).ready(function(){
     PUZZLE_HEIGHT = $("#option_size option:selected").val();
     PUZZLE_WIDTH = $("#option_size option:selected").val();
     localStorage['puzzleSize'] = PUZZLE_WIDTH;
+    this.blur();
     // localStorage['puzzlesize'] = puzzlePieces;
     newGame();
   });
