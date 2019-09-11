@@ -33,6 +33,12 @@ git branch -D gh-pages # delete the local gh-pages because you will need it: ref
 
 git push origin `git subtree split --prefix build gh-pages`:gh-pages --force
 
+run:
+git subtree split --prefix build -b gh-pages
+copy output hash
+git push origin {hash}:gh-pages --force
+git branch -D gh-pages
+
 ```
 
 ### Features:
