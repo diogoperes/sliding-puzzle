@@ -8,6 +8,8 @@ $(document).ready(function(){
   const MARGIN =2;
   const BORDER =1;
 
+  let history = [];
+
   getStorage();
 
   let PUZZLE_HEIGHT = $("#option_size option:selected").val();
@@ -16,6 +18,7 @@ $(document).ready(function(){
   let boardHeight= $('#board').height();
   let squareWidth = boardSize/(PUZZLE_WIDTH);
   let squareHeight = boardSize/(PUZZLE_HEIGHT);
+  let historyEl = document.getElementById('historyItems');
 
   let gapY = PUZZLE_HEIGHT - 1;
   let gapX = PUZZLE_WIDTH - 1;
@@ -25,12 +28,111 @@ $(document).ready(function(){
   let timer;
   let hasWin = false;
 
-  let image1= "https://tinyurl.com/ydex5sr4";
-  let image2= "https://tinyurl.com/https-puzzlepics2";
+  // let history = [
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  //   {
+  //     puzzleType: '5x5',
+  //     timestamp: Date.now(),
+  //     moves: '27',
+  //     time: '27:28'
+  //   },
+  // ];
+
+  let image1 = "https://tinyurl.com/ydex5sr4";
+  let image2 = "https://tinyurl.com/https-puzzlepics2";
   let image3 = "https://tinyurl.com/https-puzzlepics3";
-  let image4= "https://tinyurl.com/https-puzzlepics4";
-  let image5= "https://tinyurl.com/https-puzzlepics5";
-  let image6= "https://tinyurl.com/https-puzzlepics6";
+  let image4 = "https://tinyurl.com/https-puzzlepics4";
+  let image5 = "https://tinyurl.com/https-puzzlepics5";
+  let image6 = "https://tinyurl.com/https-puzzlepics6";
   let image7= "https://tinyurl.com/https-puzzlepics7";
   let image8= "https://tinyurl.com/https-puzzlepics8";
   let image9= "https://tinyurl.com/https-puzzlepics9";
@@ -69,7 +171,6 @@ $(document).ready(function(){
   //     }
   //     setBoard();
   // }
-
 
   function fillSquaresNumbers(){
     for(let y=0; y<PUZZLE_HEIGHT; y++){
@@ -339,7 +440,7 @@ $(document).ready(function(){
     let size = 600;
     let screenWidth = $(window).width();
 
-    if(screenWidth < 600) {
+    if(screenWidth < 620) {
       size = screenWidth - 20;
     }
 
@@ -443,6 +544,20 @@ $(document).ready(function(){
     hasWin = true;
     clearInterval(timer);
     $("#board").append('<div class="win-text-container"><div class="win-text">WIN</div></div>');
+
+    let newHistoryItem = {
+      puzzleType: $("#option_size option:selected").text(),
+      timestamp: Date.now(),
+      moves: $("#movements").text(),
+      time: $("#timer").text()
+    };
+
+    history.push(newHistoryItem);
+    localStorage['history'] = JSON.stringify(history);
+    addToHistory(newHistoryItem );
+    $('#historyItems').animate({
+      scrollTop: historyEl.scrollHeight
+    }, 800);
   }
 
   $('#shuffle').click(function(){
@@ -452,10 +567,21 @@ $(document).ready(function(){
 
   $('#new-game').click(() =>newGame());
 
+  $('#clearHistory').click(() =>clearHistory());
+
+  $('#historyBtn').click((event) => {
+    openHistory();
+    event.stopPropagation();
+  });
+
+  $('#gameContainer').click(() =>closeHistory());
+  $('#closeHistory').click(() =>closeHistory());
+
   $("#option_size").change(function(){
     PUZZLE_HEIGHT = $("#option_size option:selected").val();
     PUZZLE_WIDTH = $("#option_size option:selected").val();
     localStorage['puzzleSize'] = PUZZLE_WIDTH;
+    this.blur();
     // localStorage['puzzlesize'] = puzzlePieces;
     newGame();
   });
@@ -467,6 +593,7 @@ $(document).ready(function(){
     quickShuffle();
     // shuffle();
     setBoard();
+    drawHistory();
     // startTimer();
     if(timer !== undefined) {
       clearInterval(timer);
@@ -474,16 +601,98 @@ $(document).ready(function(){
   });
 
   function getStorage(){
-    if(localStorage['puzzleSize']){
+    if (localStorage['puzzleSize']) {
       $(`#option_size`).val(localStorage['puzzleSize']);
       PUZZLE_HEIGHT = localStorage['puzzleSize'];
       PUZZLE_HEIGHT = localStorage['puzzleSize'];
+    }
+
+    if (localStorage['history']) {
+      history = JSON.parse(localStorage['history']);
     }
 
     // if(localStorage['numberhint'] == "true"){
     //   $("#option_numbers").attr("checked", true);
     //   showNumbers = true;
     // }
+  }
+
+  function drawHistory() {
+
+    while (historyEl.firstChild) {
+      historyEl.removeChild(historyEl.firstChild);
+    }
+
+    history.forEach(function(element) {
+      addToHistory(element);
+    });
+
+  }
+
+  function addToHistory(element) {
+
+    if(history.length > 0 && document.getElementById('historyItems').firstChild === null) {
+      let div = document.createElement('div');
+      div.setAttribute('class', 'history-item');
+      div.innerHTML = `
+          <div class="infoNames container">
+            <div class="type">Type</div>
+            <div class="moves">Moves</div>
+            <div class="time">Time</div>
+          </div>
+      `;
+      historyEl.appendChild(div);
+    }
+
+    let div = document.createElement('div');
+    div.setAttribute('class', 'history-item');
+    div.innerHTML = `
+          <div class="infoValues container">
+            <div class="type">${element.puzzleType}</div>
+            <div class="moves">${element.moves}</div>
+            <div class="time">${element.time}</div>
+          </div>
+          <div class="date container">
+            <div>${timeConverter(element.timestamp)}</div>
+          </div>
+      `;
+    historyEl.appendChild(div);
+
+  }
+
+  function clearHistory() {
+    localStorage['history'] = "";
+    history = [];
+    drawHistory();
+  }
+  
+  function openHistory() {
+    let historyContainer = $('#history');
+    if(historyContainer.hasClass('open')) {
+      historyContainer.removeClass('open');
+    }else {
+      historyContainer.addClass('open');
+    }
+  }
+
+  function closeHistory() {
+    let historyContainer = $('#history');
+    if(historyContainer.hasClass('open')) {
+      historyContainer.removeClass('open');
+    }
+  }
+
+  function timeConverter(timestamp){
+    let a = new Date(timestamp);
+    let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    let year = a.getFullYear();
+    let month = months[a.getMonth()];
+    let date = a.getDate();
+    let hour = a.getHours() < 10 ? '0' + a.getHours() : a.getHours();
+    let min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+    let sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+    let time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
   }
 
 });
